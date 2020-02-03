@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { setOrders } from '../../actions';
+import { setOrders, addOrder } from '../../actions';
 import { connect } from 'react-redux';
 
 class OrderForm extends Component {
@@ -25,7 +25,7 @@ class OrderForm extends Component {
     e.preventDefault();
     console.log('in handle submit')
     if (this.formValidation()) {
-      this.props.setOrders({
+      this.props.addOrder({
         name: this.state.name,
         ingredients: this.state.ingredients
       })
@@ -77,7 +77,8 @@ class OrderForm extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  setOrders: orders => dispatch(setOrders(orders))
+  setOrders: orders => dispatch(setOrders(orders)),
+  addOrder: order => dispatch(addOrder(order))
 })
 
 export default connect(null, mapDispatchToProps)(OrderForm)
