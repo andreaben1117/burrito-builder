@@ -12,7 +12,7 @@ export class App extends Component {
     super();
     this.props = props;
   }
-
+//test comment
   componentDidMount() {
     getOrders()
       .then(data => this.props.setOrders(data.orders))
