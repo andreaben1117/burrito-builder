@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { setOrders } from '../../actions';
+import { connect } from 'react-redux';
 
 class OrderForm extends Component {
   constructor(props) {
@@ -16,16 +18,30 @@ class OrderForm extends Component {
 
   handleIngredientChange = e => {
     e.preventDefault();
-    this.setState({ingredients: [...this.state.ingredients, e.target.name]});
+    this.setState({ ingredients: [...this.state.ingredients, e.target.name] });
   }
 
   handleSubmit = e => {
     e.preventDefault();
-    this.clearInputs();
+    console.log('in handle submit')
+    if (this.formValidation()) {
+      this.props.setOrders({
+        name: this.state.name,
+        ingredients: this.state.ingredients
+      })
+      this.clearInputs();
+    }
+  }
+
+  formValidation = () => {
+    if (this.state.ingredients.length === 0) {
+      return false;
+    }
+    return true;
   }
 
   clearInputs = () => {
-    this.setState({name: '', ingredients: []});
+    this.setState({ name: '', ingredients: [] });
   }
 
   render() {
@@ -48,9 +64,9 @@ class OrderForm extends Component {
           onChange={e => this.handleNameChange(e)}
         />
 
-        { ingredientButtons }
+        {ingredientButtons}
 
-        <p>Order: { this.state.ingredients.join(', ') || 'Nothing selected' }</p>
+        <p>Order: {this.state.ingredients.join(', ') || 'Nothing selected'}</p>
 
         <button onClick={e => this.handleSubmit(e)}>
           Submit Order
@@ -60,4 +76,8 @@ class OrderForm extends Component {
   }
 }
 
-export default OrderForm;
+const mapDispatchToProps = dispatch => ({
+  setOrders: orders => dispatch(setOrders(orders))
+})
+
+export default connect(null, mapDispatchToProps)(OrderForm)
