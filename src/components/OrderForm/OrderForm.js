@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { setOrders, addOrder } from '../../actions';
 import { connect } from 'react-redux';
+import { postOrder } from '../../apiCalls';
 
 class OrderForm extends Component {
   constructor(props) {
@@ -23,13 +24,22 @@ class OrderForm extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    console.log('in handle submit')
     if (this.formValidation()) {
-      this.props.addOrder({
+      postOrder({
         name: this.state.name,
         ingredients: this.state.ingredients
       })
-      this.clearInputs();
+        .then(response => {
+          console.log(response)
+          if (response.status === 201) {
+            this.props.addOrder({
+              name: this.state.name,
+              ingredients: this.state.ingredients
+            })
+            this.clearInputs();
+          }
+        })
+        .catch(err => console.error('Error posting order:', err));
     }
   }
 

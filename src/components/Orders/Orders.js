@@ -19,7 +19,6 @@ class Orders extends Component {
 
   render() {
     const orderEls = this.props.orders.map((order, index) => {
-      console.log(order)
       return (
         <div className="order" key={index}>
           <h3>{order.name}</h3>
